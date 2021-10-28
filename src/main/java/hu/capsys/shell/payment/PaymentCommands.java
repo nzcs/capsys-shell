@@ -1,4 +1,4 @@
-package hu.capsys.capsysclient.payment;
+package hu.capsys.shell.payment;
 
 import hu.capsys.payment.PaymentApiClient;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.shell.standard.ShellMethod;
 import java.time.Duration;
 import java.time.Instant;
 
-import static hu.capsys.capsysclient.payment.PaymentDtoUtil.paymentDto;
+import static hu.capsys.shell.payment.PaymentDtoUtil.paymentDto;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -18,8 +18,7 @@ public class PaymentCommands {
 
 
     @ShellMethod("Create Payment")
-    public String create_payment(String a) {
-        System.out.println(a);
+    public String create_payment() {
         String paymentReference = "payment_" + System.currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
@@ -33,6 +32,7 @@ public class PaymentCommands {
                 paymentDto()
         );
         long timeElapsed = Duration.between(start, Instant.now()).toMillis();
+
         return "Payment created. Time Elapsed: " + timeElapsed + " ms";
     }
 }

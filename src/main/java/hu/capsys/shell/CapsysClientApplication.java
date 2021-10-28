@@ -1,4 +1,4 @@
-package hu.capsys.capsysclient;
+package hu.capsys.shell;
 
 import hu.capsys.payment.PayeeApiClient;
 import org.springframework.boot.SpringApplication;

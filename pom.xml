@@ -7,13 +7,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.5.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>hu.capsys</groupId>
-    <artifactId>capsys-client</artifactId>
+    <artifactId>capsys-shell</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>capsys-client</name>
+
+    <name>Capsys Shell</name>
 
 
     <properties>

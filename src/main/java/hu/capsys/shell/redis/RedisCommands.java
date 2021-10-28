@@ -1,4 +1,4 @@
-package hu.capsys.capsysclient.redis;
+package hu.capsys.shell.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RedissonClient;

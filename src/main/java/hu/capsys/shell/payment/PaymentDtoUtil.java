@@ -1,4 +1,4 @@
-package hu.capsys.capsysclient.payment;
+package hu.capsys.shell.payment;
 
 import hu.capsys.payment.model.PayeeInfoDto;
 import hu.capsys.payment.model.PaymentInfoDto;
