@@ -1,8 +1,6 @@
 package hu.capsys.shell.payment;
 
-import hu.capsys.payment.model.PayeeInfoDto;
-import hu.capsys.payment.model.PaymentInfoDto;
-import hu.capsys.payment.model.PaymentRequestDto;
+import hu.capsys.payment.model.*;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -37,11 +35,20 @@ public class PaymentDtoUtil {
                 .navCheckReference("123456789-1-23");
     }
 
-
     public static PayeeInfoDto newPayeeInfoDto() {
         return new PayeeInfoDto()
                 .name("Kovács István")
                 .accountNumber("HU123-111111111-2222222")
                 .bic("HU987");
+    }
+
+    public static UpdateStatusDto updateStatusDto(ISOPaymentStatus status) {
+        return new UpdateStatusDto()
+                .paymentInfo(
+                        newPaymentInfoDto(TEN)
+                                .mobileAppURL(null))
+                .payeeInfo(newPayeeInfoDto())
+                .payerInfo(new PayerInfoDto())
+                .paymentStatus(new PaymentStatusDto().status(status));
     }
 }

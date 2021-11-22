@@ -19,7 +19,8 @@
 
     <properties>
         <java.version>11</java.version>
-        <capsys.payment-api.version>1.0.0-SNAPSHOT</capsys.payment-api.version>
+        <capsys.payment-api.version>1.5.1-SNAPSHOT</capsys.payment-api.version>
+        <capsys.statemachine-api.version>1.5.2-SNAPSHOT</capsys.statemachine-api.version>
     </properties>
 
 
@@ -43,6 +44,11 @@
             <groupId>hu.capsys</groupId>
             <artifactId>payment-api</artifactId>
             <version>${capsys.payment-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys</groupId>
+            <artifactId>statemachine-api</artifactId>
+            <version>${capsys.statemachine-api.version}</version>
         </dependency>
 
 
