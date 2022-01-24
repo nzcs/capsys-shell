@@ -19,7 +19,8 @@
 
     <properties>
         <java.version>11</java.version>
-        <capsys.payment-api.version>1.5.1-SNAPSHOT</capsys.payment-api.version>
+        <capsys.payment-api.version>1.6.0-SNAPSHOT</capsys.payment-api.version>
+        <capsys.payment-gateway-api.version>1.6.0-SNAPSHOT</capsys.payment-gateway-api.version>
         <capsys.statemachine-api.version>1.5.2-SNAPSHOT</capsys.statemachine-api.version>
     </properties>
 
@@ -28,6 +29,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+            <version>2.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -44,6 +50,11 @@
             <groupId>hu.capsys</groupId>
             <artifactId>payment-api</artifactId>
             <version>${capsys.payment-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys</groupId>
+            <artifactId>payment-gateway-api</artifactId>
+            <version>${capsys.payment-gateway-api.version}</version>
         </dependency>
         <dependency>
             <groupId>hu.capsys</groupId>
@@ -70,6 +81,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2020.0.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 
     <build>

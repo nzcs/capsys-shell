@@ -1,7 +1,6 @@
 package hu.capsys.shell.payment;
 
 import hu.capsys.payment.model.ISOPaymentStatus;
-import hu.capsys.payment.model.PaymentResponseDto;
 import hu.capsys.statemachine.api.CurrentStateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
@@ -14,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.LongStream;
 
+import static hu.capsys.payment.model.ISOPaymentStatus.RJCT;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -24,7 +24,7 @@ public class PaymentCommands {
     final PaymentService paymentService;
 
 
-    @ShellMethod("Create PG Payment")
+    @ShellMethod("Create PP Payment")
     public String create_payment() {
         String paymentReference = "payment_" + System.currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
@@ -42,7 +42,7 @@ public class PaymentCommands {
 
     @ShellMethod("Create loop PG Payment")
     public String loop_payment() throws InterruptedException, ExecutionException {
-        long[] array = LongStream.range(0, 1000)
+        long[] array = LongStream.range(0, 100)
                 .map(x -> {
                     try {
                         Thread.sleep(1);
@@ -54,7 +54,7 @@ public class PaymentCommands {
 
         Instant start = Instant.now();
 
-        ForkJoinPool customThreadPool = new ForkJoinPool(16);
+        ForkJoinPool customThreadPool = new ForkJoinPool(1);
         customThreadPool.submit(
                 () -> Arrays.stream(array).parallel()
                         .forEach(i -> {
@@ -62,8 +62,11 @@ public class PaymentCommands {
                             try {
                                 String paymentReference = "payment_" + i;
                                 String shopReference = "LIDL.payeeRef_1.001";
-                                PaymentResponseDto payment = paymentService.createPayment(paymentReference, shopReference);
-                                System.out.printf("%d: %s (%d ms)\n", i, payment.getPaymentStatus().getStatus(), Duration.between(s, Instant.now()).toMillis());
+                                paymentService.createPayment(paymentReference, shopReference);
+//                                paymentService.acceptPayment(paymentReference, shopReference);
+                                paymentService.updateStatus(paymentReference, shopReference, RJCT);
+                                CurrentStateDto currentStateDto = paymentService.getState(paymentReference, shopReference).blockLast();
+                                System.out.printf("%d: %s (%d ms)\n", i, currentStateDto.getCurrentState(), Duration.between(s, Instant.now()).toMillis());
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -74,8 +77,8 @@ public class PaymentCommands {
     }
 
 
-    @ShellMethod("PG Payment flow")
-    public String flow_payment() {
+    @ShellMethod("Accept Payment flow")
+    public String accept_payment() {
         String paymentReference = "payment_" + System.currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
@@ -119,7 +122,8 @@ public class PaymentCommands {
         System.out.println(paymentReference + ":" + shopReference);
 
         Instant start = Instant.now();
-        paymentService.updateStatus(paymentReference, shopReference, ISOPaymentStatus.ACSP);
+        paymentService.createPayment(paymentReference, shopReference);
+        paymentService.updateStatus(paymentReference, shopReference, RJCT);
 
         printCurrentState(paymentReference, shopReference);
 

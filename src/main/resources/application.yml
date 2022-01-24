@@ -1,4 +1,15 @@
 server.port: 8080
 
 payment:
+  #  url: https://smartpilot-t2.test.bankbitts.com
   url: http://localhost:8181
+
+
+
+security:
+  oauth2:
+    client:
+      access-token-uri: https://infra.test.bankbitts.com/auth/realms/smartpilot/protocol/openid-connect/token
+      client-id: TAKBHUH0
+      client-secret: 2e18f5aa-ed9b-4fef-8f60-3d2fe19b235c
+      grant-type: client_credentials
