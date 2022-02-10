@@ -49,6 +49,14 @@ public class PaymentDtoUtil {
                                 .mobileAppURL(null))
                 .payeeInfo(newPayeeInfoDto())
                 .payerInfo(new PayerInfoDto())
-                .paymentStatus(new PaymentStatusDto().status(status));
+                .paymentStatus(new PaymentStatusDto()
+                        .status(status)
+                        .statusReasonInformation(
+                                new StatusReasonInformationDto()
+                                        .additionalInformation("bla-bla")
+                                        .reason(new StatusReasonDto()
+                                                .code("AC03"))
+                        )
+                );
     }
 }
