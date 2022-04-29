@@ -10,7 +10,6 @@ import org.springframework.shell.standard.ShellMethod;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.LongStream;
@@ -21,6 +20,7 @@ import static hu.capsys.payment.model.ISOPaymentStatus.RJCT;
 import static hu.capsys.shell.statemachine.StateMachineService.PAYMENT_REFERENCE_VARIABLE_KEY;
 import static hu.capsys.shell.statemachine.StateMachineService.SHOP_REFERENCE_VARIABLE_KEY;
 import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.requireNonNull;
 
 @ShellComponent
@@ -33,7 +33,7 @@ public class PaymentCommands {
 
     @ShellMethod("Create PP Payment")
     public String create_payment() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -48,32 +48,24 @@ public class PaymentCommands {
 
 
     @ShellMethod("Create loop PG Payment")
-    public String loop_payment() throws InterruptedException, ExecutionException {
-        long[] array = LongStream.range(0, 5)
-                .map(x -> {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ignored) {
-                    }
-                    return System.currentTimeMillis();
-                })
-                .toArray();
-
+    public String loop_payment(int n, int parallelism) throws InterruptedException, ExecutionException {
         Instant start = Instant.now();
+        long l = currentTimeMillis();
 
-        ForkJoinPool customThreadPool = new ForkJoinPool(4);
+        ForkJoinPool customThreadPool = new ForkJoinPool(parallelism);
         customThreadPool.submit(
-                () -> Arrays.stream(array).parallel()
+                () -> LongStream.range(0, n).parallel()
                         .forEach(i -> {
+                            long pId = l + i;
                             Instant s = Instant.now();
                             try {
-                                String paymentReference = "payment_" + i;
+                                String paymentReference = "payment_" + pId;
                                 String shopReference = "LIDL.payeeRef_1.001";
                                 paymentService.createPayment(paymentReference, shopReference);
 //                                paymentService.acceptPayment(paymentReference, shopReference);
                                 paymentService.updateStatus(paymentReference, shopReference, RJCT);
                                 CurrentStateDto currentStateDto = paymentService.getState(paymentReference, shopReference).blockLast();
-                                System.out.printf("%d: %s (%d ms)\n", i, currentStateDto.getCurrentState(), Duration.between(s, Instant.now()).toMillis());
+                                System.out.printf("%d: %s (%d ms)\n", pId, currentStateDto.getCurrentState(), Duration.between(s, Instant.now()).toMillis());
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
@@ -86,7 +78,7 @@ public class PaymentCommands {
 
     @ShellMethod("Accept Payment flow")
     public String accept_payment() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -105,7 +97,7 @@ public class PaymentCommands {
 
     @ShellMethod("Cancel Payment flow")
     public String cancel_payment() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -124,7 +116,7 @@ public class PaymentCommands {
 
     @ShellMethod("IpsNotif flow")
     public String ipsnotif() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -142,7 +134,7 @@ public class PaymentCommands {
 
     @ShellMethod("Create PP Payment IpsNotif")
     public String create_payment_ipsnotif() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -156,10 +148,9 @@ public class PaymentCommands {
     }
 
 
-
     @ShellMethod("IpsTraffic event")
     public String ipsTraffic() {
-        String paymentReference = "payment_" + System.currentTimeMillis();
+        String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
 
@@ -170,12 +161,12 @@ public class PaymentCommands {
         printCurrentState(paymentReference, shopReference);
 
         stateMachineService.sendEvent(paymentReference, shopReference,
-                StateMachineEventRequest.builder()
-                        .event("IpsTraffic")
-                        .putVariable(SHOP_REFERENCE_VARIABLE_KEY, shopReference)
-                        .putVariable(PAYMENT_REFERENCE_VARIABLE_KEY, paymentReference)
-                        .putVariable("bankReconItemOriginalStatus","ACWC")
-                        .build())
+                        StateMachineEventRequest.builder()
+                                .event("IpsTraffic")
+                                .putVariable(SHOP_REFERENCE_VARIABLE_KEY, shopReference)
+                                .putVariable(PAYMENT_REFERENCE_VARIABLE_KEY, paymentReference)
+                                .putVariable("bankReconItemOriginalStatus", "ACWC")
+                                .build())
                 .blockLast();
         printCurrentState(paymentReference, shopReference);
 

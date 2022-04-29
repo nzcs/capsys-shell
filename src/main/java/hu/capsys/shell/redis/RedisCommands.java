@@ -24,4 +24,10 @@ public class RedisCommands {
     public String list_db() {
         return client.getKeys().getKeysStream().collect(Collectors.joining("\n"));
     }
+
+
+    @ShellMethod("Get DB")
+    public String get_db(String key) {
+        return client.getBucket(key).get().toString();
+    }
 }
