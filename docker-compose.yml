@@ -1,0 +1,67 @@
+version: "3.9"
+
+networks:
+  default:
+    name: internal
+
+
+services:
+
+  payment_gateway:
+    container_name: payment_gateway
+    image: payment_gateway:latest
+    ports:
+      - 8080:8080
+    environment:
+      - elasticsearch.url=elasticsearch:9200
+      - redis.host=redis
+      - payment-platform.platform-addresses.cmopay=http://payment:8181
+      - payment-platform.party-addresses.cmopay=http://party:8180
+  #      - logging.level.hu.capsys=DEBUG
+
+
+  statemachine:
+    container_name: statemachine
+    image: cs-statemachine:latest
+    ports:
+      - 8085:8085
+    environment:
+      - redis.host=redis
+      - elasticsearch.url=elasticsearch:9200
+      #      - paymentInternal.url=host.docker.internal:8181
+      - paymentInternal.url=http://payment:8181
+
+
+  party:
+    container_name: party
+    image: cs_party:latest
+    ports:
+      - 8180:8180
+    environment:
+      - elasticsearch.url=elasticsearch:9200
+      - redis.host=redis
+
+
+  crypto:
+    container_name: crypto
+    image: cs-crypto:latest
+    ports:
+      - 8093:8093
+
+
+  payment:
+    container_name: payment
+    image: cs_payment:latest
+    ports:
+      - 8181:8181
+    environment:
+      - redis.host=redis
+      - elasticsearch.url=elasticsearch:9200
+      - party.url=http://party:8180
+      - payment-gateway.addresses.cmopg=http://payment_gateway:8080
+      - signature.url=http://crypto:8093
+      - stateMachine.url=http://statemachine:8085
+
+
+
+

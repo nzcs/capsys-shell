@@ -30,4 +30,11 @@ public class RedisCommands {
     public String get_db(String key) {
         return client.getBucket(key).get().toString();
     }
+
+
+//    @ShellMethod("List Queue")
+//    public String list_queue(String name) {
+//        int size = client.getBlockingDeque(name).;
+//        return "List Queue: " + size;
+//    }
 }

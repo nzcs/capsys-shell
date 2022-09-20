@@ -5,6 +5,11 @@ payment:
   url: http://localhost:8181
 
 
+spring:
+  redis:
+    port: 6379
+#    password: passw_1234
+
 
 security:
   oauth2:
@@ -13,3 +18,11 @@ security:
       client-id: TAKBHUH0
       client-secret: 2e18f5aa-ed9b-4fef-8f60-3d2fe19b235c
       grant-type: client_credentials
+
+
+
+callback:
+  keystore:
+    path: classpath:cert/client.p12
+    password: 12345678
+    type: PKCS12

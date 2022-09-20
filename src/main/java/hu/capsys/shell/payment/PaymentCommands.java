@@ -10,9 +10,6 @@ import org.springframework.shell.standard.ShellMethod;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
-import java.util.stream.LongStream;
 
 import static hu.capsys.payment.model.ISOPaymentStatus.ACSP;
 import static hu.capsys.payment.model.ISOPaymentStatus.PMAT;
@@ -32,7 +29,7 @@ public class PaymentCommands {
 
 
     @ShellMethod("Create PP Payment")
-    public String create_payment() {
+    public String create_pp_payment() {
         String paymentReference = "payment_" + currentTimeMillis();
         String shopReference = "LIDL.payeeRef_1.001";
         System.out.println(paymentReference + ":" + shopReference);
@@ -47,32 +44,13 @@ public class PaymentCommands {
     }
 
 
-    @ShellMethod("Create loop PG Payment")
-    public String loop_payment(int n, int parallelism) throws InterruptedException, ExecutionException {
+    @ShellMethod("Update PP Payment")
+    public String update_pp_payment(String shopReference, String paymentReference) {
         Instant start = Instant.now();
-        long l = currentTimeMillis();
 
-        ForkJoinPool customThreadPool = new ForkJoinPool(parallelism);
-        customThreadPool.submit(
-                () -> LongStream.range(0, n).parallel()
-                        .forEach(i -> {
-                            long pId = l + i;
-                            Instant s = Instant.now();
-                            try {
-                                String paymentReference = "payment_" + pId;
-                                String shopReference = "LIDL.payeeRef_1.001";
-                                paymentService.createPayment(paymentReference, shopReference);
-//                                paymentService.acceptPayment(paymentReference, shopReference);
-                                paymentService.updateStatus(paymentReference, shopReference, RJCT);
-                                CurrentStateDto currentStateDto = paymentService.getState(paymentReference, shopReference).blockLast();
-                                System.out.printf("%d: %s (%d ms)\n", pId, currentStateDto.getCurrentState(), Duration.between(s, Instant.now()).toMillis());
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                        })
-        ).get();
+        paymentService.updateStatus(paymentReference, shopReference, RJCT);
 
-        return format("Payments created. Time Elapsed: %d ms", Duration.between(start, Instant.now()).toMillis());
+        return format("Payment updated. Time Elapsed: %d ms", Duration.between(start, Instant.now()).toMillis());
     }
 
 

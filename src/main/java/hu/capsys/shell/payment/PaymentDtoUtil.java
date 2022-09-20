@@ -1,6 +1,14 @@
 package hu.capsys.shell.payment;
 
-import hu.capsys.payment.model.*;
+import hu.capsys.payment.model.ISOPaymentStatus;
+import hu.capsys.payment.model.PayeeInfoDto;
+import hu.capsys.payment.model.PayerInfoDto;
+import hu.capsys.payment.model.PaymentInfoDto;
+import hu.capsys.payment.model.PaymentRequestDto;
+import hu.capsys.payment.model.PaymentStatusDto;
+import hu.capsys.payment.model.StatusReasonDto;
+import hu.capsys.payment.model.StatusReasonInformationDto;
+import hu.capsys.payment.model.UpdateStatusDto;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -59,4 +67,5 @@ public class PaymentDtoUtil {
                         )
                 );
     }
+
 }

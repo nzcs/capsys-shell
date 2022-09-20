@@ -55,7 +55,7 @@ public class PaymentService {
     }
 
 
-    void updateStatus(String paymentReference, String shopReference, ISOPaymentStatus status) {
+    public void updateStatus(String paymentReference, String shopReference, ISOPaymentStatus status) {
         paymentApiClient.updateStatus(
                 "111",
                 "cmopg",

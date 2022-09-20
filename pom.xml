@@ -19,9 +19,9 @@
 
     <properties>
         <java.version>11</java.version>
-        <capsys.payment-api.version>1.7.0-SNAPSHOT</capsys.payment-api.version>
-        <capsys.payment-gateway-api.version>1.6.0</capsys.payment-gateway-api.version>
-        <capsys.statemachine-api.version>1.7.0-SNAPSHOT</capsys.statemachine-api.version>
+        <capsys.payment-api.version>1.8.0-SNAPSHOT</capsys.payment-api.version>
+        <capsys.payment-gateway-api.version>1.8.0-SNAPSHOT</capsys.payment-gateway-api.version>
+        <capsys.statemachine-api.version>1.8.0-SNAPSHOT</capsys.statemachine-api.version>
     </properties>
 
 
