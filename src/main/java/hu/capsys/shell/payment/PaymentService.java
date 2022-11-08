@@ -1,10 +1,8 @@
 package hu.capsys.shell.payment;
 
-import hu.capsys.payment.PaymentApiClient;
-import hu.capsys.payment.model.ISOPaymentStatus;
-import hu.capsys.payment.model.PaymentAcceptViewDto;
-import hu.capsys.payment.model.PaymentCancelViewDto;
-import hu.capsys.payment.model.PaymentResponseDto;
+import hu.capsys.payment.api.PaymentApiClient;
+import hu.capsys.payment.api.model.PaymentAcceptViewDto;
+import hu.capsys.payment.api.model.PaymentCancelViewDto;
 import hu.capsys.statemachine.api.CurrentStateDto;
 import hu.capsys.statemachine.api.GetStateDto;
 import hu.capsys.statemachine.api.StateMachineClient;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import static hu.capsys.shell.payment.PaymentDtoUtil.paymentDto;
 import static hu.capsys.shell.payment.PaymentDtoUtil.updateStatusDto;
 import static hu.capsys.statemachine.model.StateMachineType.PAYMENT;
 
@@ -24,20 +21,18 @@ public class PaymentService {
     final StateMachineClient stateMachineClient;
 
 
-    PaymentResponseDto createPayment(String paymentReference, String shopReference) {
-        return paymentApiClient.createPayment(
-                "111",
-                "cmopg",
-                paymentReference,
-                shopReference,
-                paymentDto()
-        ).getBody();
-    }
+//    PaymentResponse1Dto createPayment(String paymentReference, String shopReference) {
+//        return paymentApiClient.createPayment(
+//                "cmopg",
+//                paymentReference,
+//                shopReference,
+//                paymentDto()
+//        ).getBody();
+//    }
 
 
     PaymentAcceptViewDto acceptPayment(String paymentReference, String shopReference) {
         return paymentApiClient.acceptPayment(
-                "111",
                 "cmopg",
                 paymentReference,
                 shopReference
@@ -47,7 +42,6 @@ public class PaymentService {
 
     PaymentCancelViewDto cancelPayment(String paymentReference, String shopReference) {
         return paymentApiClient.cancelPayment(
-                "111",
                 "cmopg",
                 paymentReference,
                 shopReference
@@ -55,9 +49,8 @@ public class PaymentService {
     }
 
 
-    public void updateStatus(String paymentReference, String shopReference, ISOPaymentStatus status) {
+    public void updateStatus(String paymentReference, String shopReference, String status) {
         paymentApiClient.updateStatus(
-                "111",
                 "cmopg",
                 paymentReference,
                 shopReference,

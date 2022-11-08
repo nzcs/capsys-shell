@@ -6,10 +6,10 @@ import hu.capsys.paymentgateway.model.ElectronicContactDto;
 import hu.capsys.paymentgateway.model.LoadTerminalDeviceType;
 import hu.capsys.paymentgateway.model.LoadTerminalRequestDto;
 import hu.capsys.paymentgateway.model.PayeeDto;
-import hu.capsys.paymentgateway.model.PayeeInfoDto;
+import hu.capsys.paymentgateway.model.PayeeInfo1Dto;
 import hu.capsys.paymentgateway.model.PayeeStatus;
 import hu.capsys.paymentgateway.model.PaymentInfoDto;
-import hu.capsys.paymentgateway.model.PaymentRequestDto;
+import hu.capsys.paymentgateway.model.PaymentRequest1Dto;
 import hu.capsys.paymentgateway.model.PhoneNumberDto;
 import hu.capsys.paymentgateway.model.ShopDto;
 import hu.capsys.paymentgateway.model.ShopStatus;
@@ -31,17 +31,18 @@ public class PaymentGatewayUtil {
     public static final String shopNumber = "shop-num";
     public static final String platformReference = "cmopay";
     public static final String connectedSystem = "cmopg";
-    public static final String payeeReference = "payee-ref";
+    public static final String payeeReference = "payee-ref2";
     public static final String terminalReference = "terminal-ref";
 
 
-    static PaymentRequestDto paymentRequestDto() {
-        return new PaymentRequestDto()
+    static PaymentRequest1Dto paymentRequestDto() {
+        return new PaymentRequest1Dto()
                 .paymentInfo(paymentInfo())
                 .payeeInfo(payeeInfoDto())
                 .paymentInitMethod(INSTORE_PAYEE_QR)
                 .terminalDeviceInfo("Test")
-                .qrPicRequest(false);
+                .qrPicRequest(false)
+                .unprotectedFields("");
     }
 
     static PaymentInfoDto paymentInfo() {
@@ -59,8 +60,8 @@ public class PaymentGatewayUtil {
                 .platformReference(platformReference);
     }
 
-    static PayeeInfoDto payeeInfoDto() {
-        return new PayeeInfoDto()
+    static PayeeInfo1Dto payeeInfoDto() {
+        return new PayeeInfo1Dto()
                 .name(payeeName)
                 .accountNumber("HU27182032911004412510441250")
                 .bic("OTPVHUHB");

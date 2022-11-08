@@ -3,7 +3,7 @@ package hu.capsys.shell.paymentgateway;
 import hu.capsys.paymentgateway.PayeeControllerApiClient;
 import hu.capsys.paymentgateway.PaymentControllerApiClient;
 import hu.capsys.paymentgateway.TerminalControllerApiClient;
-import hu.capsys.paymentgateway.model.PaymentResponseDto;
+import hu.capsys.paymentgateway.model.PaymentResponse1Dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,7 @@ public class PaymentGatewayService {
 
 
     public String createPayment(String paymentReference) {
-        PaymentResponseDto result = paymentApi.createPayment(
-                "5d4493f2-e44a-6587",
+        PaymentResponse1Dto result = paymentApi.createPayment(
                 connectedSystem,
                 payeeReference,
                 shopNumber,
@@ -43,7 +42,6 @@ public class PaymentGatewayService {
 
     public void loadPayee() {
         payeeApi.loadPayee(
-                "112",
                 connectedSystem,
                 payeeReference,
                 payeeDto()
@@ -53,7 +51,6 @@ public class PaymentGatewayService {
 
     public void loadTerminal() {
         terminalApi.loadTerminal(
-                "113",
                 connectedSystem,
                 payeeReference,
                 shopNumber,

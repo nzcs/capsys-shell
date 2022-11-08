@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.LongStream;
 
-import static hu.capsys.payment.model.ISOPaymentStatus.ACSP;
 import static java.lang.String.format;
 import static java.lang.System.currentTimeMillis;
 
@@ -36,8 +35,8 @@ public class PaymentGatewayCommands {
     }
 
 
-    @ShellMethod("Create PG Payment")
-    public String create_pg_payment(@ShellOption(defaultValue = "") String paymentReference) {
+    @ShellMethod("Create Payment")
+    public String create_payment(@ShellOption(defaultValue = "") String paymentReference) {
         paymentReference = paymentReference.isEmpty() ? "payment_" + currentTimeMillis() : paymentReference;
         System.out.println(paymentReference);
 
@@ -45,8 +44,6 @@ public class PaymentGatewayCommands {
 
         String shopRef = pgService.createPayment(paymentReference);
         System.out.println(shopRef);
-
-//        paymentService.updateStatus(paymentReference, shopRef, RJCT);
 
         return format("Payment created. Time Elapsed: %d ms", Duration.between(start, Instant.now()).toMillis());
     }
@@ -66,7 +63,7 @@ public class PaymentGatewayCommands {
                             try {
                                 String paymentRef = "payment_" + pId;
                                 String shopRef = pgService.createPayment(paymentRef);
-                                paymentService.updateStatus(paymentRef, shopRef, ACSP);
+                                paymentService.updateStatus(paymentRef, shopRef, "ACSP");
 
                                 CurrentStateDto currentStateDto = paymentService.getState(paymentRef, shopRef).blockLast();
 
@@ -81,10 +78,4 @@ public class PaymentGatewayCommands {
         return format("Payments created. Time Elapsed: %d ms", Duration.between(start, Instant.now()).toMillis());
     }
 
-
-//    private void printCurrentState(String paymentReference, String shopReference) {
-//        CurrentStateDto state = paymentService.getState(paymentReference, shopReference)
-//                .blockLast();
-//        System.out.printf("Current state: %s%n", requireNonNull(state).getCurrentState());
-//    }
 }

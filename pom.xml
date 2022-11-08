@@ -19,9 +19,10 @@
 
     <properties>
         <java.version>11</java.version>
-        <capsys.payment-api.version>1.8.0-SNAPSHOT</capsys.payment-api.version>
-        <capsys.payment-gateway-api.version>1.8.0-SNAPSHOT</capsys.payment-gateway-api.version>
-        <capsys.statemachine-api.version>1.8.0-SNAPSHOT</capsys.statemachine-api.version>
+        <capsys.payment-api.version>1.8.11</capsys.payment-api.version>
+        <capsys.payment-gateway-api.version>1.8.6</capsys.payment-gateway-api.version>
+        <capsys.statemachine-api.version>1.8.1</capsys.statemachine-api.version>
+        <common.elasticsearch.version>1.0.1</common.elasticsearch.version>
     </properties>
 
 
@@ -60,6 +61,11 @@
             <groupId>hu.capsys</groupId>
             <artifactId>statemachine-api</artifactId>
             <version>${capsys.statemachine-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys.ms.common</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${common.elasticsearch.version}</version>
         </dependency>
 
 
