@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.4</version>
+        <version>2.7.6</version>
         <relativePath/>
     </parent>
 
@@ -18,23 +18,33 @@
 
 
     <properties>
-        <java.version>11</java.version>
-        <capsys.payment-api.version>1.8.11</capsys.payment-api.version>
-        <capsys.payment-gateway-api.version>1.8.6</capsys.payment-gateway-api.version>
-        <capsys.statemachine-api.version>1.8.1</capsys.statemachine-api.version>
-        <common.elasticsearch.version>1.0.1</common.elasticsearch.version>
+        <java.version>17</java.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-shell.version>2.1.7</spring-shell.version>
+
+        <api.recon.version>2.0.0-SNAPSHOT</api.recon.version>
+        <api.masterdata.version>2.0.1-SNAPSHOT</api.masterdata.version>
+        <api.masterdata-cpp-plugin.version>2.0.2-SNAPSHOT</api.masterdata-cpp-plugin.version>
+        <api.payment-gateway.version>2.0.0-SNAPSHOT</api.payment-gateway.version>
+        <api.payment.version>2.0.0-SNAPSHOT</api.payment.version>
+        <api.docstore.version>2.0.0-SNAPSHOT</api.docstore.version>
+        <api.giro-connector.version>2.0.11-SNAPSHOT</api.giro-connector.version>
+
+        <!--        <capsys.payment-api.version>1.8.11</capsys.payment-api.version>-->
+        <!--        <capsys.payment-gateway-api.version>1.8.6</capsys.payment-gateway-api.version>-->
+        <!--        <capsys.statemachine-api.version>1.8.1</capsys.statemachine-api.version>-->
+        <!--        <common.elasticsearch.version>1.0.1</common.elasticsearch.version>-->
     </properties>
 
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-            <version>2.2.5.RELEASE</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -46,33 +56,54 @@
             <version>3.16.3</version>
         </dependency>
 
-
         <dependency>
-            <groupId>hu.capsys</groupId>
-            <artifactId>payment-api</artifactId>
-            <version>${capsys.payment-api.version}</version>
+            <groupId>hu.capsys.gateway</groupId>
+            <artifactId>recon-api</artifactId>
+            <version>${api.recon.version}</version>
         </dependency>
         <dependency>
-            <groupId>hu.capsys</groupId>
+            <groupId>hu.capsys.gateway</groupId>
+            <artifactId>masterdata-api</artifactId>
+            <version>${api.masterdata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys.gateway</groupId>
+            <artifactId>masterdata-cpp-plugin-api</artifactId>
+            <version>${api.masterdata-cpp-plugin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys.gateway</groupId>
             <artifactId>payment-gateway-api</artifactId>
-            <version>${capsys.payment-gateway-api.version}</version>
+            <version>${api.payment-gateway.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys.gateway</groupId>
+            <artifactId>payment-api</artifactId>
+            <version>${api.payment.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.capsys.gateway</groupId>
+            <artifactId>docstore-api</artifactId>
+            <version>${api.docstore.version}</version>
         </dependency>
         <dependency>
             <groupId>hu.capsys</groupId>
-            <artifactId>statemachine-api</artifactId>
-            <version>${capsys.statemachine-api.version}</version>
+            <artifactId>giro-connector-api</artifactId>
+            <version>${api.giro-connector.version}</version>
         </dependency>
-        <dependency>
-            <groupId>hu.capsys.ms.common</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>${common.elasticsearch.version}</version>
-        </dependency>
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>hu.capsys.ms.common</groupId>-->
+        <!--            <artifactId>elasticsearch</artifactId>-->
+        <!--            <version>${common.elasticsearch.version}</version>-->
+        <!--        </dependency>-->
 
 
         <dependency>
             <groupId>org.springframework.shell</groupId>
             <artifactId>spring-shell-starter</artifactId>
-            <version>2.0.1.RELEASE</version>
+            <version>${spring-shell.version}</version>
         </dependency>
 
         <dependency>
@@ -81,11 +112,11 @@
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
     </dependencies>
 
 
@@ -94,11 +125,10 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2020.0.4</version>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 

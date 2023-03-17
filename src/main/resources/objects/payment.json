@@ -1,0 +1,25 @@
+{
+  "unprotectedFields": "",
+  "paymentInfo": {
+    "transactionAmount": 33400,
+    "transactionCurrency": "HUF",
+    "creationDateTime": "2023-03-10T18:33:08Z",
+    "expiryDateTime": null,
+    "mobileAppURL": "a.com",
+    "remittanceInfo": "mintakozlemenyremittanceinfo",
+    "invoiceReference": "inv123",
+    "customerReference": "custRef",
+    "loyaltyReference": "loyalRef",
+    "navCheckReference": "navCheck",
+    "purposeCode": "AAAA",
+    "CreditTransferReference": "CreditTransferReference",
+    "platformReference": "CAPSHUH0001"
+  },
+  "payeeInfo": {
+    "name": "name",
+    "accountNumber": "HU27182032911004412510441250"
+  },
+  "qrPicRequest": true,
+  "paymentInitMethod": "INSTORE_PAYEE_QR",
+  "terminalDeviceInfo": "termDevinfo"
+}

@@ -1,0 +1,54 @@
+{
+  "userReference": "002",
+  "party": {
+    "partyType": "PRIVATE_INDIVIDUAL",
+    "address": [
+      {
+        "addressType": "ADDRESS_OF_REGISTERED_OFFICE",
+        "country": "HU",
+        "postalCode": "3333",
+        "city": "Szecseny",
+        "streetName": "Kossuth",
+        "streetType": "ut",
+        "streetNumber": "94"
+      }
+    ],
+    "phoneNumber": [
+      {
+        "phoneNumberType": "MOBILE",
+        "countryCode": "36",
+        "prefix": "70",
+        "lineNumber": "8879981"
+      }
+    ],
+    "electronicContact": [
+      {
+        "electronicContactType": "EMAIL",
+        "electronicContact": "kovacs.jozsi@gmail.com"
+      }
+    ],
+    "account": [
+      {
+        "bankName": "MKB bank",
+        "bic": "MKKBHUH0",
+        "accountType": "CASH_ACCOUNT",
+        "iban": "HU103000022222101098987878",
+        "bban": "103000022222101098987878",
+        "accountHolder": "Kovacs Jozsef",
+        "currency": "HUF",
+        "defaultAccount": true
+      }
+    ],
+    "identifier": [
+      {
+        "identifierNumber": "12345678",
+        "identifierType": "COMPANY_REGISTRATION_NUMBER"
+      }
+    ]
+  },
+  "userType": "BO_USER",
+  "status": "ACTIVE",
+  "partnersToAccess": [
+    "A01"
+  ]
+}

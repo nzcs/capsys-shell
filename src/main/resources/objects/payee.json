@@ -1,0 +1,77 @@
+{
+  "payeeReference": "dmo00002",
+  "partnerReference": "A01",
+  "party": {
+    "partyType": "LEGAL_ENTITY",
+    "address": [
+      {
+        "addressType": "MAILING_ADDRESS",
+        "country": "UK",
+        "postalCode": "W1T 4JD",
+        "city": "London",
+        "streetName": "Cleveland",
+        "streetType": "Street",
+        "streetNumber": "30"
+      }
+    ],
+    "phoneNumber": [
+      {
+        "phoneNumberType": "MOBILE",
+        "countryCode": "36",
+        "prefix": "+",
+        "lineNumber": "123456",
+        "extension": "30",
+        "createdBy": "demo_prp"
+      }
+    ],
+    "electronicContact": [
+      {
+        "electronicContactType": "EMAIL",
+        "electronicContact": "bar@foo.com"
+      }
+    ],
+    "legalEntityDetail": {
+      "name": "Kiskutya kft.",
+      "legalForm": "LIMITED_LIABILITY_COMPANY",
+      "representativeDetail": [
+        {
+          "name": "Nagy Laci",
+          "position": "Fonok",
+          "roles": "Tulajdonos"
+        }
+      ]
+    },
+    "account": [
+      {
+        "bankName": "OTP BANK",
+        "bic": "BANKHUH2",
+        "accountType": "CASH_ACCOUNT",
+        "iban": "HU27182032911004412510441250",
+        "accountHolder": "Peter Olga",
+        "defaultAccount": true,
+        "currency": "HUF"
+      }
+    ],
+    "identifier": []
+  },
+  "status": "ACTIVE",
+  "navRegistrationResult": true,
+  "shops": [
+    {
+      "number": "001",
+      "name": "Bolt_001",
+      "status": "ACTIVE"
+    }
+  ],
+  "users": [
+    "002"
+  ],
+  "subscriptions": [
+    {
+      "subscriptionReference": "111",
+      "status": "ACTIVE",
+      "platformReference": "CAPSHUH0001",
+      "validity": "2023-03-01T12:51:19.817Z"
+    }
+  ]
+}

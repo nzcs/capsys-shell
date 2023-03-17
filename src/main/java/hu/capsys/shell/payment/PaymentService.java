@@ -1,71 +1,48 @@
 package hu.capsys.shell.payment;
 
-import hu.capsys.payment.api.PaymentApiClient;
-import hu.capsys.payment.api.model.PaymentAcceptViewDto;
-import hu.capsys.payment.api.model.PaymentCancelViewDto;
-import hu.capsys.statemachine.api.CurrentStateDto;
-import hu.capsys.statemachine.api.GetStateDto;
-import hu.capsys.statemachine.api.StateMachineClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hu.capsys.connector.giro.api.GiroConnectorPaymentApiClient;
+import hu.capsys.connector.giro.api.model.UpdateStatus1Dto;
+import hu.capsys.gateway.payment_gateway.api.PaymentGatewayControllerApiClient;
+import hu.capsys.gateway.payment_gateway.api.model.PaymentRequest1Dto;
+import hu.capsys.gateway.payment_gateway.api.model.PaymentResponse1Dto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 
-import static hu.capsys.shell.payment.PaymentDtoUtil.updateStatusDto;
-import static hu.capsys.statemachine.model.StateMachineType.PAYMENT;
+import java.io.IOException;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class PaymentService {
 
-    final PaymentApiClient paymentApiClient;
-    final StateMachineClient stateMachineClient;
+    final ObjectMapper mapper;
+    final PaymentGatewayControllerApiClient paymentClient;
+    final GiroConnectorPaymentApiClient giroClient;
+
+    @Value("${xConnectedSystem}")
+    String xConnectedSystem;
+    @Value("${platformReference}")
+    String platformReference;
+    @Value("classpath:objects/payment.json")
+    Resource paymentJson;
+    @Value("classpath:objects/updateStatus.json")
+    Resource updateStatusJson;
 
 
-//    PaymentResponse1Dto createPayment(String paymentReference, String shopReference) {
-//        return paymentApiClient.createPayment(
-//                "cmopg",
-//                paymentReference,
-//                shopReference,
-//                paymentDto()
-//        ).getBody();
-//    }
-
-
-    PaymentAcceptViewDto acceptPayment(String paymentReference, String shopReference) {
-        return paymentApiClient.acceptPayment(
-                "cmopg",
-                paymentReference,
-                shopReference
-        ).getBody();
+    public ResponseEntity<PaymentResponse1Dto> createPayment(String payeeRef, String terminalRef, String paymentRef) throws IOException {
+        PaymentRequest1Dto p = mapper.readValue(paymentJson.getFile(), PaymentRequest1Dto.class);
+        p.getPaymentInfo().setPlatformReference(platformReference);
+        return paymentClient.createPayment(xConnectedSystem, payeeRef, "001", terminalRef, paymentRef, p, UUID.randomUUID().toString());
     }
 
 
-    PaymentCancelViewDto cancelPayment(String paymentReference, String shopReference) {
-        return paymentApiClient.cancelPayment(
-                "cmopg",
-                paymentReference,
-                shopReference
-        ).getBody();
+    public HttpStatus updatePayment(String payeeRef, String paymentRef) throws IOException {
+        UpdateStatus1Dto dto = mapper.readValue(updateStatusJson.getFile(), UpdateStatus1Dto.class);
+        return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
     }
-
-
-    public void updateStatus(String paymentReference, String shopReference, String status) {
-        paymentApiClient.updateStatus(
-                "cmopg",
-                paymentReference,
-                shopReference,
-                updateStatusDto(status)
-        );
-    }
-
-
-    public Flux<CurrentStateDto> getState(String paymentReference, String shopReference) {
-        return stateMachineClient.getState(
-                GetStateDto.builder()
-                        .machineId(shopReference + ":" + paymentReference)
-                        .type(PAYMENT.getValue())
-                        .build()
-        );
-    }
-
 }

@@ -1,0 +1,28 @@
+server.port: 8070
+
+xConnectedSystem: dmo_prp
+platformReference: CAPSHUH0001
+
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          client1:
+            client-id: ${xConnectedSystem}
+            provider: provider-client1
+            client-secret: 1e7a6ca5-60d9-423b-90a7-1b21e6cdd58b
+            authorization-grant-type: client_credentials
+        provider:
+          provider-client1:
+            token-uri: http://localhost:9090/auth/realms/smartpay/protocol/openid-connect/token
+
+
+
+callback:
+  keystore:
+    path: classpath:cert/client.p12
+    password: 12345678
+    type: PKCS12
+

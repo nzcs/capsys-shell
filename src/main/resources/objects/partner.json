@@ -1,0 +1,76 @@
+{
+  "status": "ACTIVE",
+  "party": {
+    "partyType": "LEGAL_ENTITY",
+    "address": [
+      {
+        "addressType": "ADDRESS_OF_REGISTERED_OFFICE",
+        "country": "HU",
+        "postalCode": "1044",
+        "city": "Budapest",
+        "streetName": "Arpad",
+        "streetType": "ut",
+        "streetNumber": "66",
+        "building": "12",
+        "staircase": "5",
+        "floor": "5",
+        "door": "30",
+        "lotNumber": "127",
+        "postOfficeBox": "1234",
+        "postOfficeBoxPostalCode": "1234"
+      }
+    ],
+    "phoneNumber": [
+      {
+        "phoneNumberType": "MOBILE",
+        "countryCode": "36",
+        "prefix": "70",
+        "lineNumber": "8089654",
+        "extension": "123",
+        "note": "1"
+      }
+    ],
+    "legalEntityDetail": {
+      "name": "Nagy es Tarsa Informatikai Kft.",
+      "legalForm": "LIMITED_LIABILITY_COMPANY",
+      "shortName": "Kiss es Tarsa Kft.",
+      "coreBusiness": "Szoftverfejlesztes",
+      "representativeDetail": [
+        {
+          "name": "Nagy Geza",
+          "position": "Fonok",
+          "roles": "Tulajdonos",
+          "other": "other"
+        }
+      ]
+    },
+    "electronicContact": [
+      {
+        "electronicContactType": "EMAIL",
+        "electronicContact": "nagygeza@gmail.com",
+        "note": "1"
+      }
+    ],
+    "account": [
+      {
+        "bankName": "MKB bank",
+        "bic": "MKKBHUH0",
+        "accountType": "CASH_ACCOUNT",
+        "iban": "HU98103000000000000000000055",
+        "bban": "103000000000000000000055",
+        "accountHolder": "Nagy Geza",
+        "currency": "HUF",
+        "defaultAccount": true
+      }
+    ],
+    "identifier": [
+      {
+        "identifierNumber": "9898556",
+        "identifierType": "TAXNUMBER",
+        "identifierExpiryDate": "2023-02-16",
+        "identifierStatusReason": "ACTIVE",
+        "notAcceptableDate": "2023-02-16T13:10:31.686Z"
+      }
+    ]
+  }
+}
