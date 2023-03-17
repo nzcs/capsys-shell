@@ -29,11 +29,6 @@
         <api.payment.version>2.0.0-SNAPSHOT</api.payment.version>
         <api.docstore.version>2.0.0-SNAPSHOT</api.docstore.version>
         <api.giro-connector.version>2.0.11-SNAPSHOT</api.giro-connector.version>
-
-        <!--        <capsys.payment-api.version>1.8.11</capsys.payment-api.version>-->
-        <!--        <capsys.payment-gateway-api.version>1.8.6</capsys.payment-gateway-api.version>-->
-        <!--        <capsys.statemachine-api.version>1.8.1</capsys.statemachine-api.version>-->
-        <!--        <common.elasticsearch.version>1.0.1</common.elasticsearch.version>-->
     </properties>
 
 

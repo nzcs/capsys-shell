@@ -6,16 +6,12 @@ import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponse1Dto;
 import hu.capsys.gateway.payment_gateway.api.model.PaymentResponse1Dto;
 import hu.capsys.gateway.payment_gateway.api.model.PaymentStatusResponse1Dto;
 import hu.capsys.shell.masterdata.MasterDataService;
-import hu.capsys.shell.payment.PaymentController;
 import hu.capsys.shell.payment.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import reactor.core.publisher.Flux;
-
-import java.time.Duration;
 
 import static java.util.Objects.requireNonNull;
 
@@ -37,6 +33,9 @@ public class Commands {
     @ShellMethod("Full Test")
     public void test() throws Exception {
         paymentRef = "payment_" + System.currentTimeMillis();
+
+//        Flux<PaymentStatusResponse1Dto> updateResult = PaymentController.sink.asFlux()
+//                .doOnNext(PaymentStatusResponse1Dto::getStatus);
 
         HttpStatus partnerStatus = mdService.loadPartner(partnerRef);
         Partner1Dto partner = mdService.getPartner(partnerRef);
@@ -63,13 +62,10 @@ public class Commands {
         System.out.printf("Payment (%s %s): %s%n", paymentRef, p.getPaymentStatus().getStatus(), payment.getStatusCode());
 
 
-        Flux<PaymentStatusResponse1Dto> updateResult = PaymentController.sink.asFlux();
-
         HttpStatus updateStatus = paymentService.updatePayment(payeeRef, paymentRef);
         System.out.printf("Update (%s): %s%n", paymentRef, updateStatus);
 
-        updateResult
-                .doOnNext(PaymentStatusResponse1Dto::getStatus)
-                .blockLast(Duration.ofSeconds(10));
+        PaymentStatusResponse1Dto paymentResult = paymentService.getPaymentStatus(payeeRef, terminalRef, paymentRef, 10);
+        System.out.printf("Update Result (%s): %s%n", paymentRef, paymentResult.getPaymentStatus().getStatus());
     }
 }
