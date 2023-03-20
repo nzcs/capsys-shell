@@ -1,8 +1,18 @@
 package hu.capsys.shell.masterdata;
 
+import hu.capsys.gateway.masterdata.core.api.model.ApplicationUser1Dto;
+import hu.capsys.gateway.masterdata.core.api.model.Partner1Dto;
+import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponse1Dto;
+import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponseShop1Dto;
+import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponseTerminal1Dto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+
+import java.util.List;
+
+import static hu.capsys.shell.Util.print;
 
 
 @ShellComponent
@@ -13,26 +23,54 @@ public class MasterDataCommands {
 
 
     @ShellMethod("Load Partner")
-    public String loadPartner(String partnerRef) throws Exception {
-        return service.loadPartner(partnerRef).toString();
+    public void loadPartner(String partnerRef) throws Exception {
+        HttpStatus httpStatus = service.loadPartner(partnerRef);
+        Partner1Dto partner = service.getPartner(partnerRef);
+        print("Load Partner", httpStatus, partner.getPartnerReference());
     }
 
 
     @ShellMethod("Load User")
-    public String loadUser(String userRef, String... partners) throws Exception {
-        return service.loadUser(userRef, partners).toString();
+    public void loadUser(String userRef, String... partners) throws Exception {
+        HttpStatus httpStatus = service.loadUser(userRef, partners);
+        ApplicationUser1Dto user = service.getUser(userRef);
+        print("Load User", httpStatus, user.getUserReference(), user.getPartnersToAccess());
     }
 
 
     @ShellMethod("Load Payee")
-    public String loadPayee(String payeeRef, String partnerRef, String... users) throws Exception {
-        return service.loadPayee(payeeRef, partnerRef, users).toString();
+    public void loadPayee(String payeeRef, String partnerRef, String... users) throws Exception {
+        HttpStatus httpStatus = service.loadPayee(payeeRef, partnerRef, users);
+        PayeeResponse1Dto payee = service.getPayee(payeeRef);
+        print("Load Payee", httpStatus,
+                payee.getPayeeReference(),
+                payee.getPartnerReference(),
+                payee.getUsers(),
+                getTerminalReference(payee));
     }
 
 
     @ShellMethod("Load Terminal")
-    public String loadTerminal(String payeeRef, String terminalRef) throws Exception {
-        return service.loadTerminal(payeeRef, terminalRef).toString();
+    public void loadTerminal(String payeeRef, String terminalRef) throws Exception {
+        HttpStatus httpStatus = service.loadTerminal(payeeRef, terminalRef);
+        PayeeResponse1Dto payee = service.getPayee(payeeRef);
+        print("Load Terminal", httpStatus,
+                payee.getPayeeReference(),
+                payee.getPartnerReference(),
+                payee.getUsers(),
+                getTerminalReference(payee));
     }
 
+
+    String getTerminalReference(PayeeResponse1Dto payee) {
+        List<PayeeResponseShop1Dto> shops = payee.getShops();
+        if (shops.isEmpty()) {
+            return "shops is empty";
+        }
+        List<PayeeResponseTerminal1Dto> terminals = shops.get(0).getTerminals();
+        if (terminals.isEmpty()) {
+            return "terminals is empty";
+        }
+        return terminals.get(0).getTerminalReference();
+    }
 }

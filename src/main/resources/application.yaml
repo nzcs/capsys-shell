@@ -5,6 +5,9 @@ platformReference: CAPSHUH0001
 
 
 spring:
+  redis:
+    host: 64.226.90.141
+
   security:
     oauth2:
       client:
@@ -26,3 +29,6 @@ callback:
     password: 12345678
     type: PKCS12
 
+
+#giroConnectorPayment:
+#  url: 64.226.90.141:8094

@@ -1,71 +1,59 @@
 package hu.capsys.shell;
 
-import hu.capsys.gateway.masterdata.core.api.model.ApplicationUser1Dto;
-import hu.capsys.gateway.masterdata.core.api.model.Partner1Dto;
-import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponse1Dto;
-import hu.capsys.gateway.payment_gateway.api.model.PaymentResponse1Dto;
-import hu.capsys.gateway.payment_gateway.api.model.PaymentStatusResponse1Dto;
-import hu.capsys.shell.masterdata.MasterDataService;
-import hu.capsys.shell.payment.PaymentService;
+import hu.capsys.shell.masterdata.MasterDataCommands;
+import hu.capsys.shell.payment.PaymentCommands;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-
-import static java.util.Objects.requireNonNull;
 
 
 @ShellComponent
 @RequiredArgsConstructor
 public class Commands {
 
-    final MasterDataService mdService;
-    final PaymentService paymentService;
+    final MasterDataCommands masterData;
+    final PaymentCommands payment;
 
     String partnerRef = "A01";
     String userRef = "u1";
     String payeeRef = "dmo1";
     String terminalRef = "t1";
-    String paymentRef;
 
 
-    @ShellMethod("Full Test")
-    public void test() throws Exception {
-        paymentRef = "payment_" + System.currentTimeMillis();
-
-//        Flux<PaymentStatusResponse1Dto> updateResult = PaymentController.sink.asFlux()
-//                .doOnNext(PaymentStatusResponse1Dto::getStatus);
-
-        HttpStatus partnerStatus = mdService.loadPartner(partnerRef);
-        Partner1Dto partner = mdService.getPartner(partnerRef);
-        System.out.printf("Partner (%s): %s%n", partner.getPartnerReference(), partnerStatus);
-
-        HttpStatus userStatus = mdService.loadUser(userRef, partnerRef);
-        ApplicationUser1Dto user = mdService.getUser(userRef);
-        System.out.printf("User (%s, %s): %s%n", user.getUserReference(), user.getPartnersToAccess(), userStatus);
-
-        HttpStatus payeeStatus = mdService.loadPayee(payeeRef, partnerRef, userRef);
-        mdService.loadTerminal(payeeRef, terminalRef);
-        PayeeResponse1Dto payee = mdService.getPayee(payeeRef);
-        System.out.printf(
-                "Payee (%s, %s, %s, %s): %s%n",
-                payee.getPayeeReference(),
-                payee.getPartnerReference(),
-                payee.getUsers(),
-                payee.getShops().get(0).getTerminals().get(0).getTerminalReference(),
-                payeeStatus);
+    @ShellMethod("Test MasterData")
+    public void testMasterData() throws Exception {
+        masterData.loadPartner(partnerRef);
+        masterData.loadUser(userRef, partnerRef);
+        masterData.loadPayee(payeeRef, partnerRef, userRef);
+        masterData.loadTerminal(payeeRef, terminalRef);
+    }
 
 
-        ResponseEntity<PaymentResponse1Dto> payment = paymentService.createPayment(payeeRef, terminalRef, paymentRef);
-        PaymentResponse1Dto p = requireNonNull(payment.getBody());
-        System.out.printf("Payment (%s %s): %s%n", paymentRef, p.getPaymentStatus().getStatus(), payment.getStatusCode());
+    @ShellMethod("Test Update Payment")
+    public void testAcceptPayment() throws Exception {
+        String paymentRef = "p_" + System.currentTimeMillis();
+
+        payment.createPayment(payeeRef, terminalRef, paymentRef);
+        payment.acceptPayment(payeeRef, terminalRef, paymentRef);
+    }
 
 
-        HttpStatus updateStatus = paymentService.updatePayment(payeeRef, paymentRef);
-        System.out.printf("Update (%s): %s%n", paymentRef, updateStatus);
+    @ShellMethod("Test Update Payment")
+    public void testPayment_ACCC() throws Exception {
+        String paymentRef = "p_" + System.currentTimeMillis();
 
-        PaymentStatusResponse1Dto paymentResult = paymentService.getPaymentStatus(payeeRef, terminalRef, paymentRef, 10);
-        System.out.printf("Update Result (%s): %s%n", paymentRef, paymentResult.getPaymentStatus().getStatus());
+        payment.createPayment(payeeRef, terminalRef, paymentRef);
+        payment.updatePayment(payeeRef, paymentRef);
+        payment.getPaymentStatus(payeeRef, terminalRef, paymentRef);
+    }
+
+
+    @ShellMethod("Test Update Payment PMAT")
+    public void testPayment_PMAT() throws Exception {
+        String paymentRef = "p_" + System.currentTimeMillis();
+
+        payment.createPayment(payeeRef, terminalRef, paymentRef);
+        payment.updatePayment_PMAT(payeeRef, paymentRef);
+        payment.getPaymentStatus(payeeRef, terminalRef, paymentRef);
     }
 }

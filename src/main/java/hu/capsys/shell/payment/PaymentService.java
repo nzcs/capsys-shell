@@ -47,8 +47,26 @@ public class PaymentService {
         return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
     }
 
+    public HttpStatus updatePayment_PMAT(String payeeRef, String paymentRef) throws IOException {
+        UpdateStatus1Dto dto = mapper.readValue(updateStatusJson.getFile(), UpdateStatus1Dto.class);
+        dto.getPaymentInfo().setTransactionCurrency("EUR");
+        return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
+    }
 
-    public PaymentStatusResponse1Dto getPaymentStatus(String payeeRef, String terminalRef, String paymentRef, int timeout) {
-        return paymentClient.getPaymentStatus(xConnectedSystem, payeeRef, "001", terminalRef, paymentRef, UUID.randomUUID().toString(), timeout).getBody();
+
+    public HttpStatus updatePaymentPMAT(String payeeRef, String paymentRef) throws IOException {
+        UpdateStatus1Dto dto = mapper.readValue(updateStatusJson.getFile(), UpdateStatus1Dto.class);
+        dto.getPaymentInfo().setTransactionCurrency("EUR");
+        return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
+    }
+
+
+    public ResponseEntity<PaymentStatusResponse1Dto> getPaymentStatus(String payeeRef, String terminalRef, String paymentRef) {
+        return paymentClient.getPaymentStatus(xConnectedSystem, payeeRef, "001", terminalRef, paymentRef, UUID.randomUUID().toString(), 10);
+    }
+
+
+    public ResponseEntity<PaymentStatusResponse1Dto> acceptPayment(String payeeRef, String terminalRef, String paymentRef) {
+        return paymentClient.acceptPayment(xConnectedSystem, payeeRef, "001", terminalRef, paymentRef, UUID.randomUUID().toString());
     }
 }
