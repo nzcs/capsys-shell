@@ -16,8 +16,10 @@
     "platformReference": "CAPSHUH0001"
   },
   "payeeInfo": {
-    "name": "name",
-    "accountNumber": "HU27182032911004412510441250"
+    "name": "Kiskutya kft.",
+    "tradeName": "Bolt_001",
+    "accountNumber": "HU27182032911004412510441250",
+    "bic": "BANKHUH2"
   },
   "qrPicRequest": true,
   "paymentInitMethod": "INSTORE_PAYEE_QR",

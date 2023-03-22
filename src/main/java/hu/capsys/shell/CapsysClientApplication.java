@@ -6,6 +6,8 @@ import hu.capsys.gateway.masterdata.core.api.PartnerBoControllerApiClient;
 import hu.capsys.gateway.masterdata.plugin.cpp.api.PayeeBoControllerApiClient;
 import hu.capsys.gateway.masterdata.plugin.cpp.api.TerminalBoControllerApiClient;
 import hu.capsys.gateway.payment_gateway.api.PaymentGatewayControllerApiClient;
+import hu.capsys.gateway.recon.api.ErrorItemControllerApiClient;
+import hu.capsys.gateway.recon.api.ReconControllerApiClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -19,6 +21,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
         TerminalBoControllerApiClient.class,
         PaymentGatewayControllerApiClient.class,
         GiroConnectorPaymentApiClient.class,
+        ErrorItemControllerApiClient.class,
+        ReconControllerApiClient.class
 })
 public class CapsysClientApplication {
 

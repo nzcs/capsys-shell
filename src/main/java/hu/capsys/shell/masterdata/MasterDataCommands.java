@@ -5,6 +5,7 @@ import hu.capsys.gateway.masterdata.core.api.model.Partner1Dto;
 import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponse1Dto;
 import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponseShop1Dto;
 import hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeResponseTerminal1Dto;
+import hu.capsys.gateway.masterdata.plugin.cpp.api.model.Subscription2Dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.shell.standard.ShellComponent;
@@ -46,7 +47,8 @@ public class MasterDataCommands {
                 payee.getPayeeReference(),
                 payee.getPartnerReference(),
                 payee.getUsers(),
-                getTerminalReference(payee));
+                getTerminalReference(payee),
+                getSubscription(payee));
     }
 
 
@@ -58,9 +60,18 @@ public class MasterDataCommands {
                 payee.getPayeeReference(),
                 payee.getPartnerReference(),
                 payee.getUsers(),
-                getTerminalReference(payee));
+                getTerminalReference(payee),
+                getSubscription(payee));
     }
 
+
+    String getSubscription(PayeeResponse1Dto payee) {
+        List<Subscription2Dto> subscriptions = payee.getSubscriptions();
+        if (subscriptions.isEmpty()) {
+            return "subscriptions is empty";
+        }
+        return subscriptions.get(0).getSubscriptionReference() + ":" + subscriptions.get(0).getValidity();
+    }
 
     String getTerminalReference(PayeeResponse1Dto payee) {
         List<PayeeResponseShop1Dto> shops = payee.getShops();

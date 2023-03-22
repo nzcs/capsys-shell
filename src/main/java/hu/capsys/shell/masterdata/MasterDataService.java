@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeDataFilterOptions.SUBSCRIPTIONS;
 import static hu.capsys.gateway.masterdata.plugin.cpp.api.model.PayeeDataFilterOptions.TERMINALS;
 
 @Service
@@ -78,7 +79,7 @@ public class MasterDataService {
     }
 
     public PayeeResponse1Dto getPayee(String payeeRef) {
-        return payeeClient.getPayee(xConnectedSystem, payeeRef, UUID.randomUUID().toString(), List.of(TERMINALS)).getBody();
+        return payeeClient.getPayee(xConnectedSystem, payeeRef, UUID.randomUUID().toString(), List.of(TERMINALS, SUBSCRIPTIONS)).getBody();
     }
 
 

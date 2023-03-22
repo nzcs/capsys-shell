@@ -1,0 +1,13 @@
+{
+  "name": "provider_1",
+  "shortName": "provider_1",
+  "platformReference": "CAPSHUH0001",
+  "applications": [
+    {
+      "applicationName": "application_1",
+      "url": "a.com",
+      "supportedQrType": "MNBQR2",
+      "shortApplicationName": "app_1"
+    }
+  ]
+}

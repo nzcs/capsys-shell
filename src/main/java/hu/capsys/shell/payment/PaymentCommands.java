@@ -3,11 +3,15 @@ package hu.capsys.shell.payment;
 import hu.capsys.gateway.payment_gateway.api.model.PaymentResponse1Dto;
 import hu.capsys.gateway.payment_gateway.api.model.PaymentStatusDto;
 import hu.capsys.gateway.payment_gateway.api.model.PaymentStatusResponse1Dto;
+import hu.capsys.gateway.payment_gateway.api.model.Provider1Dto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static hu.capsys.shell.Util.print;
 import static java.util.Objects.requireNonNull;
@@ -18,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 public class PaymentCommands {
 
     final PaymentService paymentService;
+    final ProviderService providerService;
 
 
     @ShellMethod("Create Payment")
@@ -54,6 +59,14 @@ public class PaymentCommands {
         ResponseEntity<PaymentStatusResponse1Dto> result = paymentService.getPaymentStatus(payeeRef, terminalRef, paymentRef);
         PaymentStatusResponse1Dto s = requireNonNull(result.getBody());
         print("Get Payment Status", result.getStatusCode(), paymentRef, toString(s.getPaymentStatus()));
+    }
+
+
+    @ShellMethod("Load Provider")
+    public void loadProvider() throws Exception {
+        HttpStatus httpStatus = providerService.loadProvider();
+        List<Provider1Dto> providers = providerService.getProviders();
+        print("Load Provider", httpStatus, providers.stream().collect(Collectors.toMap(Provider1Dto::getName, Provider1Dto::getPlatformReference)));
     }
 
 

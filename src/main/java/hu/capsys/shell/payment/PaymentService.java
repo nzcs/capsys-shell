@@ -44,11 +44,13 @@ public class PaymentService {
 
     public HttpStatus updatePayment(String payeeRef, String paymentRef) throws IOException {
         UpdateStatus1Dto dto = mapper.readValue(updateStatusJson.getFile(), UpdateStatus1Dto.class);
+        dto.getCreditTransferInfo().setMessageId(paymentRef);
         return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
     }
 
     public HttpStatus updatePayment_PMAT(String payeeRef, String paymentRef) throws IOException {
         UpdateStatus1Dto dto = mapper.readValue(updateStatusJson.getFile(), UpdateStatus1Dto.class);
+        dto.getCreditTransferInfo().setMessageId(paymentRef);
         dto.getPaymentInfo().setTransactionCurrency("EUR");
         return giroClient.updateStatus(xConnectedSystem, paymentRef, "001." + payeeRef + "." + platformReference, dto).getStatusCode();
     }
